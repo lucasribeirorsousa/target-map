@@ -1,0 +1,12 @@
+{% block content %}
+<div class="modal-body">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary">Salvar</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -33,4 +33,4 @@ class Target(models.Model):
         """
         Returns the target name as a string.
         """
-        return self.tree.name
+        return self.name
