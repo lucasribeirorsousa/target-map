@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Target Map</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="row mt-4">
+        <div class="col-md-12 offset-md-8">
+            <button id="add-target-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-target-modal">
+                Adicionar novo alvo
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-md-12 offset-md-0">
+                {{ map|safe }}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="add-target-modal" tabindex="-1" role="dialog" aria-labelledby="add-target-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="add-target-modal-label">Adicionar novo alvo</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <iframe src="{% url 'add_target' %}" name="my_iframe" style="width: 100%; height: 400px; border: none;"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="update-target-modal" role="document" tabindex="-1" role="dialog" aria-labelledby="add-target-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Editar alvo</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Salvar</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+          </div>
+          </div>
+      </div>
+
+      
+      <script>
+        function closeModal() {
+          console.log('chamou')
+            $('#add-target-modal').modal('hide');
+        }
+        
+        $(document).ready(function () {
+              $('form').on('submit', function (event) {
+                  event.preventDefault();
+      
+                  $.ajax({
+                      type: 'post',
+                      url: '{% url "add_target" %}',
+                      data: $('form').serialize(),
+                      success: function (data) {
+                          // Update modal content with the response
+                          $('#add-target-modal .modal-body').html('<p>Form submitted successfully!</p>');
+      
+                          // Close the modal after a short delay
+                          setTimeout(function () {
+                              closeModal();
+                          }, 1000);
+                      },
+                      error: function (xhr, status, error) {
+                          // Handle errors here
+                      }
+                  });
+              });
+          });
+      </script>
+{% endblock %}
+
