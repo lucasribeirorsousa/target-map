@@ -3,15 +3,18 @@
 
 {% block content %}
 <div class="modal-body">
-  <form id="add-target-form" method="post">
+  <form id="add-target-form" method="post" target="my_iframe">
     {% csrf_token %}
     {{ form.as_p }}
     <div class="modal-footer">
-      <button type="submit" class="btn btn-primary">Salvar</button>
+      <button type="submit" class="btn btn-primary" onclick="closeModal()">Salvar</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
     </div>
   </form>
 </div>
+
+
+
 
 {% endblock %}
 

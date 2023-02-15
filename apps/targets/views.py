@@ -16,7 +16,7 @@ def home(request):
 
     for target in targets:
         marker = folium.Marker([target.latitude, target.longitude], tooltip=target.name)
-        marker.add_child(folium.Popup('id="{}" latitude="{}" longitude="{}"'.format(target.id, target.latitude, target.longitude)))
+        marker.add_child(folium.Popup('id="{}" latitude="{}" longitude="{}" date expiração="{}"'.format(target.id, target.latitude, target.longitude, target.date_expiry)))
         marker.add_to(map)
 
     map = map._repr_html_()
